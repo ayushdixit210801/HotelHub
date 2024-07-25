@@ -7,9 +7,12 @@
 	</head>
 	<body>
 		<h1>All Hotels</h1>
+		<div>
+			<a href="/hotels/new">Add Hotel</a>
+		</div>
 		<ul>
 			<% hotels.forEach(hotel => { %>
-			<li><%= hotel.title %></li>
+			<li><a href="hotels/<%=hotel._id%>"><%=hotel.title%></a></li>
 			<% }) %>
 		</ul>
 	</body>

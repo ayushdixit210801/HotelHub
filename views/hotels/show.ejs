@@ -3,9 +3,19 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Document</title>
+		<title>Hotel Details</title>
 	</head>
 	<body>
 		<h1><%=hotel.title%></h1>
+		<h2><%=hotel.location%></h2>
+		<h3><%=hotel.price%></h3>
+		<p><%=hotel.description%></p>
+		<form action="/hotels/<%=hotel._id%>?_method=DELETE" method="POST">
+			<button>Delete</button>
+		</form>
+		<footer>
+			<a href="/hotels">All Hotels</a>
+			<a href="/hotels/<%=hotel._id%>/edit">Edit</a>
+		</footer>
 	</body>
 </html>

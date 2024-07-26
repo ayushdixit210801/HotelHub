@@ -1,19 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Hotels</title>
-	</head>
-	<body>
-		<h1>All Hotels</h1>
-		<div>
-			<a href="/hotels/new">Add Hotel</a>
+<% layout("layouts/boilerplate")%>
+<h1>All Hotels</h1>
+<div>
+	<a href="/hotels/new">Add Hotel</a>
+</div>
+<% for (let hotel of hotels){%>
+<div class="card" mb-3>
+	<div class="row">
+		<div class="col-md-3">
+			<img class="img-fluid" alt="" src="<%=hotel.image%>" />
 		</div>
-		<ul>
-			<% hotels.forEach(hotel => { %>
-			<li><a href="hotels/<%=hotel._id%>"><%=hotel.title%></a></li>
-			<% }) %>
-		</ul>
-	</body>
-</html>
+		<div class="col-md-8">
+			<div class="card-body">
+				<h5 class="card-title"><%= hotel.title %></h5>
+				<p class="card-text"><%= hotel.description %></p>
+				<p class="card-text">
+					<small class="text-muted"><%= hotel.location%></small>
+				</p>
+				<a class="btn btn-primary" href="/hotels/<%=hotel._id%>"
+					>View <%=hotel.title%></a
+				>
+			</div>
+		</div>
+	</div>
+</div>
+<% }%>

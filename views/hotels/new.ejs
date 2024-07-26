@@ -1,32 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>New Hotel</title>
-	</head>
-	<body>
-		<form action="/hotels" , method="POST">
-			<div>
-				<label for="title">Title</label>
-				<input type="text" id="title" name="hotel[title]" />
+<% layout('layouts/boilerplate')%>
+<div class="row">
+	<h1 class="text-center">New Hotel</h1>
+	<div class="col-6 offset-3">
+		<form action="/hotels" method="POST">
+			<div class="mb-3">
+				<label class="form-label" for="title">Title</label>
+				<input
+					class="form-control"
+					type="text"
+					id="title"
+					name="hotel[title]" />
 			</div>
-			<div>
-				<label for="location">Location</label>
-				<input type="text" id="location" name="hotel[location]" />
+			<div class="mb-3">
+				<label class="form-label" for="location">Location</label>
+				<input
+					class="form-control"
+					type="text"
+					id="location"
+					name="hotel[location]" />
 			</div>
-			<div>
-				<label for="price">Price</label>
-				<input type="number" id="price" name="hotel[price]" />
+			<div class="mb-3">
+				<label class="form-label" for="image">Image Url</label>
+				<input
+					class="form-control"
+					type="text"
+					id="image"
+					name="hotel[image]" />
 			</div>
-			<div>
-				<label for="description">Description</label>
-				<input type="text" id="description" name="hotel[description]" />
+			<div class="mb-3">
+				<label class="form-label" for="price">Hotel Price</label>
+				<div class="input-group">
+					<span class="input-group-text" id="price-label">$</span>
+					<input
+						type="text"
+						class="form-control"
+						id="price"
+						placeholder="0.00"
+						aria-label="price"
+						aria-describedby="price-label"
+						name="hotel[price]" />
+				</div>
 			</div>
-			<button>Add Hotel</button>
+
+			<div class="mb-3">
+				<label class="form-label" for="description">Description</label>
+				<textarea
+					class="form-control"
+					type="text"
+					id="description"
+					name="hotel[description]"></textarea>
+			</div>
+			<div class="mb-3">
+				<button class="btn btn-success">Add Hotel</button>
+			</div>
 		</form>
-		<footer>
-			<a href="/hotels">All Hotels</a>
-		</footer>
-	</body>
-</html>
+		<a href="/hotels">All Hotels</a>
+	</div>
+</div>

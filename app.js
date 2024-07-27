@@ -4,6 +4,9 @@ const mongoose = require("mongoose");
 const ejsMate = require("ejs-mate");
 const Hotel = require("./models/hotel");
 const methodOverride = require("method-override");
+const catchAsync = require("./utils/catchAsync");
+const ExpressError = require("./utils/ExpressError");
+const { hotelSchema } = require("./schemas.js");
 
 mongoose.connect("mongodb://localhost:27017/HotelHub");
 
@@ -24,41 +27,81 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(methodOverride("_method"));
 
+const validateHotel = (req, res, next) => {
+	const { error } = hotelSchema.validate(req.body);
+	if (error) {
+		const msg = error.details.map((el) => el.message).join(",");
+		throw new ExpressError(msg, 400);
+	} else {
+		next();
+	}
+};
+
 app.get("/", (req, res) => {
 	res.render("home");
 });
-app.get("/hotels", async (req, res) => {
-	const hotels = await Hotel.find({});
-	res.render("hotels/index", { hotels });
-});
+app.get(
+	"/hotels",
+	catchAsync(async (req, res) => {
+		const hotels = await Hotel.find({});
+		res.render("hotels/index", { hotels });
+	})
+);
 app.get("/hotels/new", (req, res) => {
 	res.render("hotels/new");
 });
-app.post("/hotels", async (req, res) => {
-	const hotel = new Hotel(req.body.hotel);
-	await hotel.save();
-	res.redirect(`/hotels/${hotel._id}`);
+app.post(
+	"/hotels",
+	validateHotel,
+	catchAsync(async (req, res) => {
+		const hotel = new Hotel(req.body.hotel);
+		await hotel.save();
+		res.redirect(`/hotels/${hotel._id}`);
+	})
+);
+app.get(
+	"/hotels/:id",
+	catchAsync(async (req, res) => {
+		const { id } = req.params;
+		const hotel = await Hotel.findById(id);
+		res.render("hotels/show", { hotel });
+	})
+);
+app.get(
+	"/hotels/:id/edit",
+	catchAsync(async (req, res) => {
+		const { id } = req.params;
+		const hotel = await Hotel.findById(id);
+		res.render("hotels/edit", { hotel });
+	})
+);
+app.put(
+	"/hotels/:id",
+	validateHotel,
+	catchAsync(async (req, res) => {
+		const hotel = req.body.hotel;
+		const { id } = req.params;
+		await Hotel.findByIdAndUpdate(id, hotel);
+		res.redirect(`/hotels/${id}`);
+	})
+);
+app.delete(
+	"/hotels/:id",
+	catchAsync(async (req, res) => {
+		const { id } = req.params;
+		await Hotel.findByIdAndDelete(id);
+		res.redirect("/hotels");
+	})
+);
+
+app.all("*", (req, res, next) => {
+	next(new ExpressError("Page Not Found", 404));
 });
-app.get("/hotels/:id", async (req, res) => {
-	const { id } = req.params;
-	const hotel = await Hotel.findById(id);
-	res.render("hotels/show", { hotel });
-});
-app.get("/hotels/:id/edit", async (req, res) => {
-	const { id } = req.params;
-	const hotel = await Hotel.findById(id);
-	res.render("hotels/edit", { hotel });
-});
-app.put("/hotels/:id", async (req, res) => {
-	const hotel = req.body.hotel;
-	const { id } = req.params;
-	await Hotel.findByIdAndUpdate(id, hotel);
-	res.redirect(`/hotels/${id}`);
-});
-app.delete("/hotels/:id", async (req, res) => {
-	const { id } = req.params;
-	await Hotel.findByIdAndDelete(id);
-	res.redirect("/hotels");
+
+app.use((err, req, res, next) => {
+	const { statusCode = 500 } = err;
+	if (!err.message) err.message = "Oh No, Something Went Wrong!";
+	res.status(statusCode).render("error", { err });
 });
 
 app.listen(port, () => {

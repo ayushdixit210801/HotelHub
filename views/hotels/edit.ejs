@@ -2,7 +2,11 @@
 <div class="row">
 	<h1 class="text-center">Edit Hotel</h1>
 	<div class="col-6 offset-3">
-		<form action="/hotels/<%=hotel.id%>?_method=PUT" , method="POST">
+		<form
+			action="/hotels/<%=hotel.id%>?_method=PUT"
+			method="POST"
+			novalidate
+			class="validated-form">
 			<div class="mb-3">
 				<label class="form-label" for="title">Title</label>
 				<input
@@ -10,7 +14,9 @@
 					type="text"
 					id="title"
 					name="hotel[title]"
-					value="<%=hotel.title%>" />
+					value="<%=hotel.title%>"
+					required />
+				<div class="valid-feedback">Looks good!</div>
 			</div>
 			<div class="mb-3">
 				<label class="form-label" for="location">Location</label>
@@ -19,7 +25,9 @@
 					type="text"
 					id="location"
 					name="hotel[location]"
-					value="<%=hotel.location%>" />
+					value="<%=hotel.location%>"
+					required />
+				<div class="valid-feedback">Looks good!</div>
 			</div>
 			<div class="mb-3">
 				<label class="form-label" for="image">Image Url</label>
@@ -28,7 +36,9 @@
 					type="text"
 					id="image"
 					name="hotel[image]"
-					value="<%=hotel.image%>" />
+					value="<%=hotel.image%>"
+					required />
+				<div class="valid-feedback">Looks good!</div>
 			</div>
 			<div class="mb-3">
 				<label class="form-label" for="price">Hotel Price</label>
@@ -42,8 +52,10 @@
 						aria-label="price"
 						aria-describedby="price-label"
 						name="hotel[price]"
-						value="<%=hotel.price%>" />
+						value="<%=hotel.price%>"
+						required />
 				</div>
+				<div class="valid-feedback">Looks good!</div>
 			</div>
 
 			<div class="mb-3">
@@ -52,12 +64,14 @@
 					class="form-control"
 					type="text"
 					id="description"
-					name="hotel[description]">
+					name="hotel[description]"
+					required>
 <%=hotel.description%></textarea
 				>
+				<div class="valid-feedback">Looks good!</div>
 			</div>
 			<div class="mb-3">
-				<button class="btn btn-primary">Update Hotel</button>
+				<button class="btn btn-info">Update Hotel</button>
 			</div>
 		</form>
 		<a href="/hotels/<%=hotel._id%>">Back to Hotel</a>

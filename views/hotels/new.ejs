@@ -2,14 +2,16 @@
 <div class="row">
 	<h1 class="text-center">New Hotel</h1>
 	<div class="col-6 offset-3">
-		<form action="/hotels" method="POST">
+		<form action="/hotels" method="POST" novalidate class="validated-form">
 			<div class="mb-3">
 				<label class="form-label" for="title">Title</label>
 				<input
 					class="form-control"
 					type="text"
 					id="title"
-					name="hotel[title]" />
+					name="hotel[title]"
+					required />
+				<div class="valid-feedback">Looks good!</div>
 			</div>
 			<div class="mb-3">
 				<label class="form-label" for="location">Location</label>
@@ -17,7 +19,9 @@
 					class="form-control"
 					type="text"
 					id="location"
-					name="hotel[location]" />
+					name="hotel[location]"
+					required />
+				<div class="valid-feedback">Looks good!</div>
 			</div>
 			<div class="mb-3">
 				<label class="form-label" for="image">Image Url</label>
@@ -25,7 +29,9 @@
 					class="form-control"
 					type="text"
 					id="image"
-					name="hotel[image]" />
+					name="hotel[image]"
+					required />
+				<div class="valid-feedback">Looks good!</div>
 			</div>
 			<div class="mb-3">
 				<label class="form-label" for="price">Hotel Price</label>
@@ -38,8 +44,10 @@
 						placeholder="0.00"
 						aria-label="price"
 						aria-describedby="price-label"
-						name="hotel[price]" />
+						name="hotel[price]"
+						required />
 				</div>
+				<div class="valid-feedback">Looks good!</div>
 			</div>
 
 			<div class="mb-3">
@@ -48,7 +56,9 @@
 					class="form-control"
 					type="text"
 					id="description"
-					name="hotel[description]"></textarea>
+					name="hotel[description]"
+					required></textarea>
+				<div class="valid-feedback">Looks good!</div>
 			</div>
 			<div class="mb-3">
 				<button class="btn btn-success">Add Hotel</button>

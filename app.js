@@ -3,10 +3,11 @@ const path = require("path");
 const mongoose = require("mongoose");
 const ejsMate = require("ejs-mate");
 const Hotel = require("./models/hotel");
+const Review = require("./models/review");
 const methodOverride = require("method-override");
 const catchAsync = require("./utils/catchAsync");
 const ExpressError = require("./utils/ExpressError");
-const { hotelSchema } = require("./schemas.js");
+const { hotelSchema, reviewSchema } = require("./schemas.js");
 
 mongoose.connect("mongodb://localhost:27017/HotelHub");
 
@@ -29,6 +30,16 @@ app.use(methodOverride("_method"));
 
 const validateHotel = (req, res, next) => {
 	const { error } = hotelSchema.validate(req.body);
+	if (error) {
+		const msg = error.details.map((el) => el.message).join(",");
+		throw new ExpressError(msg, 400);
+	} else {
+		next();
+	}
+};
+
+const validateReview = (req, res, next) => {
+	const { error } = reviewSchema.validate(req.body);
 	if (error) {
 		const msg = error.details.map((el) => el.message).join(",");
 		throw new ExpressError(msg, 400);
@@ -63,7 +74,7 @@ app.get(
 	"/hotels/:id",
 	catchAsync(async (req, res) => {
 		const { id } = req.params;
-		const hotel = await Hotel.findById(id);
+		const hotel = await Hotel.findById(id).populate("reviews");
 		res.render("hotels/show", { hotel });
 	})
 );
@@ -91,6 +102,27 @@ app.delete(
 		const { id } = req.params;
 		await Hotel.findByIdAndDelete(id);
 		res.redirect("/hotels");
+	})
+);
+app.post(
+	"/hotels/:id/reviews",
+	validateReview,
+	catchAsync(async (req, res) => {
+		const hotel = await Hotel.findById(req.params.id);
+		const review = new Review(req.body.review);
+		hotel.reviews.push(review);
+		await review.save();
+		await hotel.save();
+		res.redirect(`/hotels/${hotel._id}`);
+	})
+);
+app.delete(
+	"/hotels/:id/reviews/:reviewId",
+	catchAsync(async (req, res) => {
+		const { id, reviewId } = req.params;
+		await Hotel.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
+		await Review.findByIdAndDelete(reviewId);
+		res.redirect(`/hotels/${id}`);
 	})
 );
 

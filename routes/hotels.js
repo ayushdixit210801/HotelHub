@@ -4,6 +4,7 @@ const catchAsync = require("../utils/catchAsync");
 const ExpressError = require("../utils/ExpressError");
 const Hotel = require("../models/hotel");
 const { hotelSchema } = require("../schemas.js");
+const { isLoggedIn } = require("../middleware");
 
 const validateHotel = (req, res, next) => {
 	const { error } = hotelSchema.validate(req.body);
@@ -22,11 +23,12 @@ router.get(
 		res.render("hotels/index", { hotels });
 	})
 );
-router.get("/new", (req, res) => {
+router.get("/new", isLoggedIn, (req, res) => {
 	res.render("hotels/new");
 });
 router.post(
 	"/",
+	isLoggedIn,
 	validateHotel,
 	catchAsync(async (req, res) => {
 		const hotel = new Hotel(req.body.hotel);
@@ -49,6 +51,7 @@ router.get(
 );
 router.get(
 	"/:id/edit",
+	isLoggedIn,
 	catchAsync(async (req, res) => {
 		const { id } = req.params;
 		const hotel = await Hotel.findById(id);
@@ -61,6 +64,7 @@ router.get(
 );
 router.put(
 	"/:id",
+	isLoggedIn,
 	validateHotel,
 	catchAsync(async (req, res) => {
 		const hotel = req.body.hotel;
@@ -72,6 +76,7 @@ router.put(
 );
 router.delete(
 	"/:id",
+	isLoggedIn,
 	catchAsync(async (req, res) => {
 		const { id } = req.params;
 		await Hotel.findByIdAndDelete(id);

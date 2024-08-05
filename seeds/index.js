@@ -19,6 +19,7 @@ const seedDB = async () => {
 		const random1000 = Math.floor(Math.random() * 1000);
 		const price = Math.floor(Math.random() * 20) + 10;
 		const hotel = new Hotel({
+			author: "66b0ce2cfa0847c1c8a1df2d",
 			location: `${cities[random1000].city}, ${cities[random1000].state}`,
 			image: `https://picsum.photos/300?random=${Math.random()}`,
 			title: `${sample(descriptors)} ${sample(places)} Hotel`,

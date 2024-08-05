@@ -1,20 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const catchAsync = require("../utils/catchAsync");
-const ExpressError = require("../utils/ExpressError");
 const Hotel = require("../models/hotel");
-const { hotelSchema } = require("../schemas.js");
-const { isLoggedIn } = require("../middleware");
-
-const validateHotel = (req, res, next) => {
-	const { error } = hotelSchema.validate(req.body);
-	if (error) {
-		const msg = error.details.map((el) => el.message).join(",");
-		throw new ExpressError(msg, 400);
-	} else {
-		next();
-	}
-};
+const { isLoggedIn, isAuthor, validateHotel } = require("../middleware");
 
 router.get(
 	"/",
@@ -32,6 +20,7 @@ router.post(
 	validateHotel,
 	catchAsync(async (req, res) => {
 		const hotel = new Hotel(req.body.hotel);
+		hotel.author = req.user._id;
 		await hotel.save();
 		req.flash("success", "Successfully made a new hotel!");
 		res.redirect(`/hotels/${hotel._id}`);
@@ -41,7 +30,9 @@ router.get(
 	"/:id",
 	catchAsync(async (req, res) => {
 		const { id } = req.params;
-		const hotel = await Hotel.findById(id).populate("reviews");
+		const hotel = await Hotel.findById(id)
+			.populate({ path: "reviews", populate: { path: "author" } })
+			.populate("author");
 		if (!hotel) {
 			req.flash("error", "Cannot find that hotel!");
 			return res.redirect("/hotels");
@@ -52,6 +43,7 @@ router.get(
 router.get(
 	"/:id/edit",
 	isLoggedIn,
+	isAuthor,
 	catchAsync(async (req, res) => {
 		const { id } = req.params;
 		const hotel = await Hotel.findById(id);
@@ -65,6 +57,7 @@ router.get(
 router.put(
 	"/:id",
 	isLoggedIn,
+	isAuthor,
 	validateHotel,
 	catchAsync(async (req, res) => {
 		const hotel = req.body.hotel;
@@ -77,6 +70,7 @@ router.put(
 router.delete(
 	"/:id",
 	isLoggedIn,
+	isAuthor,
 	catchAsync(async (req, res) => {
 		const { id } = req.params;
 		await Hotel.findByIdAndDelete(id);

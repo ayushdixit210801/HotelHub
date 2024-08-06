@@ -21,7 +21,16 @@ const seedDB = async () => {
 		const hotel = new Hotel({
 			author: "66b0ce2cfa0847c1c8a1df2d",
 			location: `${cities[random1000].city}, ${cities[random1000].state}`,
-			image: `https://picsum.photos/300?random=${Math.random()}`,
+			images: [
+				{
+					url: `https://picsum.photos/300?random=${Math.random()}`,
+					filename: "a",
+				},
+				{
+					url: `https://picsum.photos/300?random=${Math.random()}`,
+					filename: "b",
+				},
+			],
 			title: `${sample(descriptors)} ${sample(places)} Hotel`,
 			price: price,
 			description: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus id nulla quia, temporibus tempora adipisci officia magnam sed beatae sequi doloremque tempore at ab itaque nisi cum quos sit. Amet.Ipsum itaque reiciendis molestias vero dolorum beatae suscipit nemo doloribus, maxime omnis iste facilis! Ea consectetur inventore odio id alias quo tenetur ipsum modi vel esse, voluptatem sunt cum sit.`,

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Hotel = require("../models/hotel");
-const cities = require("./cities");
+const indianCities = require("./indianCities");
 const defaultImages = require("./images");
 const { places, descriptors } = require("./seedHelpers");
 
@@ -17,16 +17,16 @@ const sample = (array) => array[Math.floor(Math.random() * array.length)];
 const seedDB = async () => {
 	await Hotel.deleteMany({});
 	for (let i = 0; i < 300; i++) {
-		const random1000 = Math.floor(Math.random() * 1000);
+		const random528 = Math.floor(Math.random() * 528);
 		const imgIndexOne = (i % 15) * 2;
 		const imgIndexTwo = imgIndexOne + 1;
-		const price = Math.floor(Math.random() * 20) + 10;
+		const price = (Math.floor(Math.random() * 300) + 20) * 100 - 1;
 		const hotel = new Hotel({
 			author: "66b0ce2cfa0847c1c8a1df2d",
-			location: `${cities[random1000].city}, ${cities[random1000].state}`,
+			location: `${indianCities[random528].city}, ${indianCities[random528].state}`,
 			geometry: {
 				type: "Point",
-				coordinates: [cities[random1000].longitude, cities[random1000].latitude],
+				coordinates: [indianCities[random528].longitude, indianCities[random528].latitude],
 			},
 			images: [
 				{

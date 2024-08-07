@@ -1,5 +1,7 @@
 const Hotel = require("../models/hotel");
 const cloudinary = require("cloudinary");
+const maptilerClient = require("@maptiler/client");
+maptilerClient.config.apiKey = process.env.MAPTILER_API_KEY;
 
 module.exports.index = async (req, res) => {
 	const hotels = await Hotel.find({});
@@ -11,7 +13,13 @@ module.exports.renderNewForm = (req, res) => {
 };
 
 module.exports.createHotel = async (req, res) => {
+	const geoData = await maptilerClient.geocoding.forward(req.body.hotel.location, { limit: 1 });
+	if (!geoData.features.length) {
+		req.flash("error", "Invalid location, please try again!");
+		return res.redirect("/hotels/new");
+	}
 	const hotel = new Hotel(req.body.hotel);
+	hotel.geometry = geoData.features[0].geometry;
 	hotel.images = req.files.map((f) => ({ url: f.path, filename: f.filename }));
 	hotel.author = req.user._id;
 	await hotel.save();
@@ -43,15 +51,24 @@ module.exports.renderEditForm = async (req, res) => {
 
 module.exports.updateHotel = async (req, res) => {
 	const { id } = req.params;
+	const geoData = await maptilerClient.geocoding.forward(req.body.hotel.location, { limit: 1 });
+	if (!geoData.features.length) {
+		req.flash("error", "Invalid location, please try again!");
+		return res.redirect(`/hotels/${id}/edit`);
+	}
 	const hotel = await Hotel.findByIdAndUpdate(id, { ...req.body.hotel });
+	hotel.geometry = geoData.features[0].geometry;
 	const imgs = req.files.map((f) => ({ url: f.path, filename: f.filename }));
 	hotel.images.push(...imgs);
 	await hotel.save();
 	if (req.body.deleteImages) {
-		for (let filename of req.body.deleteImages) {
-			await cloudinary.uploader.destroy(filename);
+		for (let id of req.body.deleteImages) {
+			const img = hotel.images.find((i) => i._id == id);
+			if (img.isDefault === false) {
+				await cloudinary.uploader.destroy(img.filename);
+			}
+			await hotel.updateOne({ $pull: { images: { filename: { $in: img.filename } } } });
 		}
-		await hotel.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages } } } });
 	}
 	req.flash("success", "Successfully updated hotel!");
 	res.redirect(`/hotels/${id}`);
@@ -61,7 +78,9 @@ module.exports.deleteHotel = async (req, res) => {
 	const { id } = req.params;
 	const hotel = await Hotel.findById(id);
 	for (let img of hotel.images) {
-		await cloudinary.uploader.destroy(img.filename);
+		if (!img.isDefault) {
+			await cloudinary.uploader.destroy(img.filename);
+		}
 	}
 	await Hotel.findByIdAndDelete(id);
 	req.flash("success", "Successfully deleted hotel");

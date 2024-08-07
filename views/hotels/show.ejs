@@ -9,7 +9,11 @@
 				<div class="carousel-item <%= i === 0 ? 'active' : '' %>">
 					<img src="<%=hotel.images[i].url%>" class="d-block w-100" alt="" />
 				</div>
-				<% }) %>
+				<% }) %> <% if(hotel.images.length === 0) { %>
+				<div class="carousel-item active">
+					<img src="https://placehold.co/600x400?text=No+Image&font=roboto" class="d-block w-100" alt="" />
+				</div>
+				<% } %>
 			</div>
 			<% if(hotel.images.length > 1) { %>
 			<button class="carousel-control-prev" type="button" data-bs-target="#carouselHotel" data-bs-slide="prev">
@@ -44,7 +48,8 @@
 		</div>
 	</div>
 	<div class="col-6">
-		<% if(currentUser && !hotel.author._id.equals(currentUser._id)) { %>
+		<div id="map" style="width: 100%; height: 300px"></div>
+		<% if(currentUser) { %>
 		<h2>Leave a Review</h2>
 		<form action="/hotels/<%=hotel._id%>/reviews" method="POST" class="mb-3 validated-form" novalidate>
 			<fieldset class="starability-basic">
@@ -87,3 +92,10 @@
 		<% } %>
 	</div>
 </div>
+
+<script>
+	const maptilerApiKey = '<%- process.env.MAPTILER_API_KEY %>';
+	const hotel = <%- JSON.stringify(hotel) %>
+</script>
+
+<script src="/javascripts/showPageMap.js"></script>

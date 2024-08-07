@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Hotel = require("../models/hotel");
 const cities = require("./cities");
+const defaultImages = require("./images");
 const { places, descriptors } = require("./seedHelpers");
 
 mongoose.connect("mongodb://localhost:27017/HotelHub");
@@ -15,20 +16,28 @@ const sample = (array) => array[Math.floor(Math.random() * array.length)];
 
 const seedDB = async () => {
 	await Hotel.deleteMany({});
-	for (let i = 0; i < 50; i++) {
+	for (let i = 0; i < 15; i++) {
 		const random1000 = Math.floor(Math.random() * 1000);
+		const imgIndexOne = i * 2;
+		const imgIndexTwo = i * 2 + 1;
 		const price = Math.floor(Math.random() * 20) + 10;
 		const hotel = new Hotel({
 			author: "66b0ce2cfa0847c1c8a1df2d",
 			location: `${cities[random1000].city}, ${cities[random1000].state}`,
+			geometry: {
+				type: "Point",
+				coordinates: [cities[random1000].longitude, cities[random1000].latitude],
+			},
 			images: [
 				{
-					url: `https://picsum.photos/300?random=${Math.random()}`,
-					filename: "a",
+					url: defaultImages[imgIndexOne].path,
+					filename: defaultImages[imgIndexOne].filename,
+					isDefault: true,
 				},
 				{
-					url: `https://picsum.photos/300?random=${Math.random()}`,
-					filename: "b",
+					url: defaultImages[imgIndexTwo].path,
+					filename: defaultImages[imgIndexTwo].filename,
+					isDefault: true,
 				},
 			],
 			title: `${sample(descriptors)} ${sample(places)} Hotel`,

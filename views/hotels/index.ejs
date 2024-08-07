@@ -6,19 +6,21 @@
 <% for (let hotel of hotels){%>
 <div class="card" mb-3>
 	<div class="row">
-		<div class="col-md-3">
+		<div class="col-md-3 d-flex align-items-center justify-content-center">
+			<% if(hotel.images.length > 0){%>
 			<img class="img-fluid" alt="" src="<%=hotel.images[0].url%>" />
+			<%} else {%>
+			<img class="img-fluid" alt="" src="https://placehold.co/600x400?text=No+Image&font=roboto" />
+			<% }%>
 		</div>
-		<div class="col-md-8">
+		<div class="col-md-8 d-flex align-items-center">
 			<div class="card-body">
 				<h5 class="card-title"><%= hotel.title %></h5>
 				<p class="card-text"><%= hotel.description %></p>
 				<p class="card-text">
 					<small class="text-muted"><%= hotel.location%></small>
 				</p>
-				<a class="btn btn-primary" href="/hotels/<%=hotel._id%>"
-					>View <%=hotel.title%></a
-				>
+				<a class="btn btn-primary" href="/hotels/<%=hotel._id%>">View <%=hotel.title%></a>
 			</div>
 		</div>
 	</div>

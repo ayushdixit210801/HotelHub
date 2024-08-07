@@ -10,7 +10,7 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
 	cloudinary,
 	params: {
-		folder: "HotelHub",
+		folder: "HotelHubUploads",
 		allowedFormats: ["jpeg", "png", "jpg"],
 	},
 });

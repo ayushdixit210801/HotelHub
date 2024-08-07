@@ -16,10 +16,10 @@ const sample = (array) => array[Math.floor(Math.random() * array.length)];
 
 const seedDB = async () => {
 	await Hotel.deleteMany({});
-	for (let i = 0; i < 15; i++) {
+	for (let i = 0; i < 300; i++) {
 		const random1000 = Math.floor(Math.random() * 1000);
-		const imgIndexOne = i * 2;
-		const imgIndexTwo = i * 2 + 1;
+		const imgIndexOne = (i % 15) * 2;
+		const imgIndexTwo = imgIndexOne + 1;
 		const price = Math.floor(Math.random() * 20) + 10;
 		const hotel = new Hotel({
 			author: "66b0ce2cfa0847c1c8a1df2d",

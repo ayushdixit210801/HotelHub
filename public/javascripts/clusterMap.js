@@ -24,7 +24,7 @@ map.on("load", function () {
 		paint: {
 			// Use step expressions (https://docs.maptiler.com/gl-style-specification/expressions/#step)
 			// with three steps to implement three types of circles:
-			"circle-color": ["step", ["get", "point_count"], "#00BCD4", 10, "#00BCD4", 30, "#00BCD4"],
+			"circle-color": ["step", ["get", "point_count"], "#00BCD4", 10, "#3ACE51", 30, "#FB5F5F"],
 			"circle-radius": ["step", ["get", "point_count"], 15, 10, 20, 30, 25],
 		},
 	});
@@ -47,7 +47,7 @@ map.on("load", function () {
 		source: "hotels",
 		filter: ["!", ["has", "point_count"]],
 		paint: {
-			"circle-color": "#11b4da",
+			"circle-color": "#970EBD",
 			"circle-radius": 6,
 			"circle-stroke-width": 1,
 			"circle-stroke-color": "#fff",

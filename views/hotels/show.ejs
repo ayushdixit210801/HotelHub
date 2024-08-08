@@ -11,7 +11,7 @@
 				</div>
 				<% }) %> <% if(hotel.images.length === 0) { %>
 				<div class="carousel-item active">
-					<img src="https://placehold.co/600x400?text=No+Image&font=roboto" class="d-block w-100" alt="" />
+					<img crossorigin="anonymous" src="https://placehold.co/600x400?text=No+Image&font=roboto" class="d-block w-100" alt="" />
 				</div>
 				<% } %>
 			</div>
@@ -37,18 +37,19 @@
 				<li class="list-group-item">$<%= hotel.price%>/night</li>
 			</ul>
 			<% if(currentUser && hotel.author._id.equals(currentUser._id)) { %>
-			<div class="card-body">
+			<div class="card-footer">
 				<a class="card-link btn btn-info" href="/hotels/<%=hotel._id%>/edit">Edit</a>
 				<form class="d-inline" action="/hotels/<%=hotel._id%>?_method=DELETE" method="POST">
 					<button class="btn btn-danger">Delete</button>
 				</form>
 			</div>
 			<% } %>
-			<div class="card-footer text-muted">2 days ago</div>
 		</div>
 	</div>
 	<div class="col-6">
-		<div id="map"></div>
+		<div class="card mb-3">
+			<div class="card-body"><div id="map"></div></div>
+		</div>
 		<% if(currentUser) { %>
 		<h2>Leave a Review</h2>
 		<form action="/hotels/<%=hotel._id%>/reviews" method="POST" class="mb-3 validated-form" novalidate>

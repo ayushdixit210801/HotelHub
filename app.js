@@ -7,7 +7,6 @@ const path = require("path");
 const mongoose = require("mongoose");
 const ejsMate = require("ejs-mate");
 const methodOverride = require("method-override");
-const session = require("express-session");
 const flash = require("connect-flash");
 const ExpressError = require("./utils/ExpressError");
 const passport = require("passport");
@@ -15,13 +14,18 @@ const LocalStrategy = require("passport-local");
 const User = require("./models/user");
 const helmet = require("helmet");
 
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
+
 const hotelRoutes = require("./routes/hotels");
 const reviewRoutes = require("./routes/reviews");
 const userRoutes = require("./routes/user");
 
 const mongoSanitize = require("express-mongo-sanitize");
 
-mongoose.connect("mongodb://localhost:27017/HotelHub");
+const dbUrl = process.env.DB_URL || "mongodb://localhost:3000/HotelHub";
+
+mongoose.connect(dbUrl);
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
@@ -46,7 +50,20 @@ app.use(
 	})
 );
 
+const store = MongoStore.create({
+	mongoUrl: dbUrl,
+	touchAfter: 24 * 60 * 60,
+	crypto: {
+		secret: "Classified!",
+	},
+});
+
+store.on("error", function (e) {
+	console.log("Session Store Error", e);
+});
+
 const sessionConfig = {
+	store,
 	name: "session",
 	secret: "Classified!",
 	resave: false,
@@ -135,5 +152,5 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(port, () => {
-	console.log(`Server running at port : ${port}`);
+	console.log(`Server running`);
 });

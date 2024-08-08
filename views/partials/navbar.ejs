@@ -36,10 +36,12 @@
 					</ul>
 				</li>
 			</ul>
+			<% if(currentUser) {%>
 			<form class="d-flex">
 				<input class="form-control me-2" type="search" placeholder="Search Hotel(s)" aria-label="Search" />
 				<button class="btn btn-success" type="submit">Search</button>
 			</form>
+			<% } %>
 		</div>
 	</div>
 </nav>

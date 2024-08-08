@@ -1,16 +1,33 @@
 <% layout('layouts/boilerplate')%>
-<h1>Login</h1>
-<form action="/login" method="POST" class="validated-form" novalidate>
-	<div class="mb-3">
-		<label class="form-label" for="username">Username</label>
-		<input class="form-control" type="text" id="username" name="username" required />
-		<div class="valid-feedback">Looks good!</div>
-	</div>
 
-	<div class="mb-3">
-		<label class="form-label" for="password">Password</label>
-		<input class="form-control" type="password" id="password" name="password" required />
-		<div class="valid-feedback">Looks good!</div>
+<div class="container d-flex justify-content-center align-items-center my-5">
+	<div class="row">
+		<div class="col-md-6 offset-md-3 col-xl-4 offset-xl-4">
+			<div class="card shadow">
+				<img
+					src="https://images.pexels.com/photos/189296/pexels-photo-189296.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+					alt=""
+					class="card-img-top shadow-lg" />
+				<div class="card-body">
+					<h5 class="card-title">Login</h5>
+					<form action="/login" method="POST" class="validated-form" novalidate>
+						<div class="mb-3">
+							<label class="form-label" for="username">Username</label>
+							<input class="form-control" type="text" id="username" name="username" required />
+							<div class="valid-feedback">Looks good!</div>
+						</div>
+
+						<div class="mb-3">
+							<label class="form-label" for="password">Password</label>
+							<input class="form-control" type="password" id="password" name="password" required />
+							<div class="valid-feedback">Looks good!</div>
+						</div>
+						<div class="d-grid">
+							<button class="btn btn-success btn-block">Login</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
 	</div>
-	<button class="btn btn-success">Login</button>
-</form>
+</div>

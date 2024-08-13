@@ -8,7 +8,7 @@ const map = new maptilersdk.Map({
 });
 
 map.on("load", function () {
-	map.addSource("hotels", {
+	map.addSource("allHotels", {
 		type: "geojson",
 		data: hotels,
 		cluster: true,
@@ -19,7 +19,7 @@ map.on("load", function () {
 	map.addLayer({
 		id: "clusters",
 		type: "circle",
-		source: "hotels",
+		source: "allHotels",
 		filter: ["has", "point_count"],
 		paint: {
 			// Use step expressions (https://docs.maptiler.com/gl-style-specification/expressions/#step)
@@ -32,7 +32,7 @@ map.on("load", function () {
 	map.addLayer({
 		id: "cluster-count",
 		type: "symbol",
-		source: "hotels",
+		source: "allHotels",
 		filter: ["has", "point_count"],
 		layout: {
 			"text-field": "{point_count_abbreviated}",
@@ -44,7 +44,7 @@ map.on("load", function () {
 	map.addLayer({
 		id: "unclustered-point",
 		type: "circle",
-		source: "hotels",
+		source: "allHotels",
 		filter: ["!", ["has", "point_count"]],
 		paint: {
 			"circle-color": "#970EBD",
@@ -60,7 +60,7 @@ map.on("load", function () {
 			layers: ["clusters"],
 		});
 		const clusterId = features[0].properties.cluster_id;
-		const zoom = await map.getSource("hotels").getClusterExpansionZoom(clusterId);
+		const zoom = await map.getSource("allHotels").getClusterExpansionZoom(clusterId);
 		map.easeTo({
 			center: features[0].geometry.coordinates,
 			zoom,

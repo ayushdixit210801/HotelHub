@@ -11,6 +11,10 @@ const ImageSchema = new Schema({
 	},
 });
 
+ImageSchema.virtual("thumb").get(function () {
+	return this.url.replace("/upload", "/upload/h_277,w_415");
+});
+
 ImageSchema.virtual("thumbnail").get(function () {
 	return this.url.replace("/upload", "/upload/w_200");
 });
@@ -45,6 +49,16 @@ const hotelSchema = new Schema(
 				ref: "Review",
 			},
 		],
+		dateCreated: {
+			type: String,
+		},
+		editDate: {
+			type: String,
+		},
+		avg_rating: {
+			type: Number,
+			default: 0,
+		},
 	},
 	opts
 );
@@ -53,7 +67,8 @@ hotelSchema.virtual("properties.popUpMarkup").get(function () {
 	return `
 		<strong><a href="/hotels/${this._id}">${this.title}</a></strong>
 		<br><strong>₹ ${this.price} / night</strong>
-		<p>${this.description.substring(0, 20)}...</p>`;
+		<br>Rating : ${this.avg_rating}<br>Rewiews : ${this.reviews.length}
+		`;
 });
 
 hotelSchema.post("findOneAndDelete", async function (doc) {

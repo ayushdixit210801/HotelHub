@@ -1,0 +1,28 @@
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+
+const bookingSchema = new Schema({
+	author: {
+		type: Schema.Types.ObjectId,
+		ref: "User",
+	},
+	hotel: {
+		type: Schema.Types.ObjectId,
+		ref: "Hotel",
+	},
+	from: {
+		type: Date,
+		required: true,
+	},
+	to: {
+		type: Date,
+		required: true,
+	},
+	status: {
+		type: String,
+		enum: ["pending", "ongoing", "finished", "cancelled"],
+		default: "pending",
+	},
+});
+
+module.exports = mongoose.model("Booking", bookingSchema);

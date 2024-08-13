@@ -23,7 +23,7 @@ const userRoutes = require("./routes/user");
 
 const mongoSanitize = require("express-mongo-sanitize");
 
-const dbUrl = process.env.DB_URL || "mongodb://localhost:3000/HotelHub";
+const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/HotelHub";
 
 mongoose.connect(dbUrl);
 
@@ -70,7 +70,7 @@ const sessionConfig = {
 	saveUninitialized: true,
 	cookie: {
 		httpOnly: true,
-		// secure: true
+		secure: true,
 		expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
 		maxAge: 1000 * 60 * 60 * 24 * 7,
 	},
@@ -85,6 +85,7 @@ const scriptSrcUrls = [
 	"https://cdnjs.cloudflare.com/",
 	"https://cdn.jsdelivr.net",
 	"https://cdn.maptiler.com/",
+	"https://use.fontawesome.com/",
 ];
 const styleSrcUrls = [
 	"https://kit-free.fontawesome.com/",
@@ -95,7 +96,7 @@ const styleSrcUrls = [
 	"https://cdn.maptiler.com/",
 ];
 const connectSrcUrls = ["https://api.maptiler.com/"];
-const fontSrcUrls = [];
+const fontSrcUrls = ["https://use.fontawesome.com/"];
 app.use(
 	helmet.contentSecurityPolicy({
 		directives: {
@@ -130,6 +131,8 @@ app.use((req, res, next) => {
 	res.locals.currentUser = req.user;
 	res.locals.success = req.flash("success");
 	res.locals.error = req.flash("error");
+	res.locals.moment = require("moment");
+	res.locals.ratingInfo = ["Terrible", "Not good", "Average", "Very good", "Amazing"];
 	next();
 });
 
@@ -152,5 +155,5 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(port, () => {
-	console.log(`Server running`);
+	console.log(`Server running at port ${port}`);
 });

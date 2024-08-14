@@ -7,6 +7,11 @@
 				<div class="card">
 					<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
 						<div class="carousel-inner">
+							<% if(hotel.images.length < 1){ %>
+							<div class="carousel-item active">
+								<img src="https://placehold.co/600x400?text=No+Image&font=roboto" class="d-block w-100 card-images" alt="...">
+							</div>
+							<% } %>
 							<% hotel.images.forEach((img, index) => { %>
 							<div class="carousel-item <%= index==0 ? "active": "" %>">
 								<img src="<%= img.url %>" class="d-block w-100 card-images" alt="...">
@@ -42,7 +47,7 @@
 					<ul class="list-group list-group-flush">
 						<li class="list-group-item"><i class="fas fa-user me-2 text-danger"></i>
 							<%= hotel.author?.username %></li>
-						<li class="list-group-item"><i class="fas fa-rupee-sign me-2 text-success"></i>
+						<li class="list-group-item"><i class="fas fa-indian-rupee-sign me-2 text-success"></i>
 							<%= hotel.price %>/Night
 						</li>
 						<li class="list-group-item"><i class="fas fa-globe me-2 text-primary"></i>
@@ -62,15 +67,18 @@
 							</i>
 							<% } %>
 						</li>
+						<% if(currentUser){ %>
+							<li class="list-group-item my-1">
+								<a href="/hotels/bookings/<%= hotel._id %>/new" class="card-link btn btn-success">Book Rooms</a>
+							</li>
+						<% } %>
 					</ul>
 					<% if (currentUser && (`${hotel.author?._id}` == `${currentUser?._id}`)){ %>
 					<div class="card-body">
-						<a href="/hotels/<%= hotel._id %>/edit" class="card-link btn btn-info">Edit
-							<%= hotel.title %>
-						</a>
-						<form action="/hotels/<%= hotel._id %>/delete?_method=DELETE" method="POST"
+						<a href="/hotels/<%= hotel._id %>/edit" class="card-link btn btn-info">Edit Hotel</a>
+						<form action="/hotels/<%= hotel._id %>?_method=DELETE" method="POST"
 							class="d-inline">
-							<button class="btn btn-danger">Delete</button>
+							<button class="btn btn-danger">Delete Hotel</button>
 						</form>
 					</div>
 					<% } %>

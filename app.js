@@ -20,6 +20,7 @@ const MongoStore = require("connect-mongo");
 const hotelRoutes = require("./routes/hotels");
 const reviewRoutes = require("./routes/reviews");
 const userRoutes = require("./routes/user");
+const bookingRoutes = require("./routes/bookings");
 
 const mongoSanitize = require("express-mongo-sanitize");
 
@@ -70,7 +71,7 @@ const sessionConfig = {
 	saveUninitialized: true,
 	cookie: {
 		httpOnly: true,
-		secure: true,
+		// secure: true,
 		expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
 		maxAge: 1000 * 60 * 60 * 24 * 7,
 	},
@@ -89,14 +90,16 @@ const scriptSrcUrls = [
 ];
 const styleSrcUrls = [
 	"https://kit-free.fontawesome.com/",
+	"https://kit.fontawesome.com/",
 	"https://stackpath.bootstrapcdn.com/",
 	"https://fonts.googleapis.com/",
 	"https://use.fontawesome.com/",
 	"https://cdn.jsdelivr.net",
 	"https://cdn.maptiler.com/",
+	"https://cdnjs.cloudflare.com/",
 ];
-const connectSrcUrls = ["https://api.maptiler.com/"];
-const fontSrcUrls = ["https://use.fontawesome.com/"];
+const connectSrcUrls = ["https://api.maptiler.com/", "https://kit.fontawesome.com/", "https://cdnjs.cloudflare.com/"];
+const fontSrcUrls = ["https://use.fontawesome.com/", "https://kit.fontawesome.com/", "https://cdnjs.cloudflare.com/"];
 app.use(
 	helmet.contentSecurityPolicy({
 		directives: {
@@ -114,6 +117,8 @@ app.use(
 				"https://api.maptiler.com/",
 				"https://images.pexels.com/photos/",
 				"https://placehold.co/",
+				"https://cdnjs.cloudflare.com/",
+				"https://via.placeholder.com/",
 			],
 			fontSrc: ["'self'", ...fontSrcUrls],
 		},
@@ -137,6 +142,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/", userRoutes);
+app.use("/hotels/bookings", bookingRoutes);
 app.use("/hotels", hotelRoutes);
 app.use("/hotels/:id/reviews", reviewRoutes);
 

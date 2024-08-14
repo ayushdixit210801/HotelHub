@@ -34,10 +34,10 @@
 <div class="container d-flex flex-wrap justify-content-evenly mt-5">
 	<% for (let hotel of hotels){%>
 	<div class="card m-1 shadow">
-		<img src="<%= hotel.images.length>0? hotel.images[0].thumb : "https://placehold.co/600x400?text=No+Image&font=roboto" %>" class="card-img-top" alt="...">
+		<img src="<%= hotel.images.length>0? hotel.images[0].thumb : "https://placehold.co/415x277?text=No+Image&font=roboto" %>" class="card-img-top" alt="...">
 		<div class="card-body">
 			<h4 class="card-title"><%= hotel.title %></h4>
-			<h5 class="card-text"><i class="fas fa-rupee-sign me-2 text-success"></i><%= hotel.price %>/night</h5>
+			<h5 class="card-text"><i class="fas fa-indian-rupee-sign me-2 text-success"></i><%= hotel.price %>/night</h5>
 			<br />
 			<p class="card-text average-rating">
 				<% for (let i=1; i<=Math.round(hotel.avg_rating); i++) {%>
@@ -50,7 +50,8 @@
 			<p class="card-text">
 				<small class="text-muted"><i class="fas fa-globe me-2 text-danger"></i><%= hotel.location%></small>
 			</p>
-			<a class="btn btn-primary" href="/hotels/<%=hotel._id%>">View <%=hotel.title%></a>
+			<a class="btn btn-primary" href="/hotels/<%=hotel._id%>">View Hotel</a>
+			<a class="btn btn-success" href="/hotels/bookings/<%=hotel._id%>/new">Book Rooms</a>
 		</div>
 	</div>
 	<% }%>

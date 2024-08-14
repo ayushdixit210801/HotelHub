@@ -16,3 +16,15 @@
     z-index: 7000;
     opacity: 0.9;
 }
+
+.completed-tab{
+    background-color: rgb(237, 253, 243);
+}
+
+.current-tab{
+    background-color: rgb(232, 245, 254);
+}
+
+.upcoming-tab{
+    background-color: rgb(253, 252, 227);
+}

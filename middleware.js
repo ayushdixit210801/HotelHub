@@ -1,4 +1,4 @@
-const { hotelSchema, reviewSchema } = require("./schemas.js");
+const { hotelSchema, reviewSchema, bookingSchema } = require("./schemas.js");
 const Hotel = require("./models/hotel");
 const Review = require("./models/review");
 const ExpressError = require("./utils/ExpressError");
@@ -51,6 +51,16 @@ module.exports.isReviewAuthor = async (req, res, next) => {
 
 module.exports.validateReview = (req, res, next) => {
 	const { error } = reviewSchema.validate(req.body);
+	if (error) {
+		const msg = error.details.map((el) => el.message).join(",");
+		throw new ExpressError(msg, 400);
+	} else {
+		next();
+	}
+};
+
+module.exports.validateBooking = (req, res, next) => {
+	const { error } = bookingSchema.validate(req.body);
 	if (error) {
 		const msg = error.details.map((el) => el.message).join(",");
 		throw new ExpressError(msg, 400);

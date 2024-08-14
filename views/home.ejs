@@ -9,6 +9,11 @@
 			href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
 			integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I"
 			crossorigin="anonymous" />
+		<link
+			rel="stylesheet"
+			href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"
+			integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk"
+			crossorigin="anonymous" />
 		<link rel="stylesheet" href="/stylesheets/home.css" />
 	</head>
 
@@ -24,6 +29,7 @@
 						<a class="nav-link" href="/login">Login</a>
 						<a class="nav-link" href="/register">Register</a>
 						<% } else { %>
+						<a class="nav-link" href="/hotels/bookings">Bookings</a>
 						<a class="nav-link" href="/logout">Logout</a>
 						<% } %>
 					</nav>
@@ -40,7 +46,11 @@
 			</main>
 
 			<footer class="mt-auto text-white-50">
-				<p>&copy; 2024</p>
+				<p>
+					&copy; HotelHub 2024 |
+					<i class="fab fa-github me-1"></i>
+					<a class="text-white-50" href="https://github.com/ayushdixit210801/HotelHub/tree/master" style="text-decoration: none" target="_none">GitHub</a>
+				</p>
 			</footer>
 		</div>
 

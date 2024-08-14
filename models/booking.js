@@ -18,11 +18,19 @@ const bookingSchema = new Schema({
 		type: Date,
 		required: true,
 	},
+	rooms: {
+		type: Number,
+		required: true,
+	},
 	status: {
 		type: String,
-		enum: ["pending", "ongoing", "finished", "cancelled"],
-		default: "pending",
+		enum: ["upcoming", "ongoing", "completed"],
+		default: "upcoming",
 	},
+});
+
+bookingSchema.virtual("totalPrice").get(function () {
+	return this.rooms * this.hotel.price * Math.ceil((this.to - this.from + 1) / (1000 * 60 * 60 * 24));
 });
 
 module.exports = mongoose.model("Booking", bookingSchema);

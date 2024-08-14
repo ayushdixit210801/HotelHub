@@ -1,4 +1,5 @@
 const Hotel = require("../models/hotel");
+const Booking = require("../models/booking");
 const cloudinary = require("cloudinary");
 const maptilerClient = require("@maptiler/client");
 const moment = require("moment");
@@ -136,6 +137,7 @@ module.exports.deleteHotel = async (req, res) => {
 			await cloudinary.uploader.destroy(img.filename);
 		}
 	}
+	await Booking.deleteMany({ hotel: id });
 	await Hotel.findByIdAndDelete(id);
 	req.flash("success", "Successfully deleted hotel");
 	res.redirect("/hotels");

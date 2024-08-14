@@ -39,3 +39,11 @@ module.exports.reviewSchema = Joi.object({
 		body: Joi.string().required().escapeHTML(),
 	}).required(),
 });
+
+module.exports.bookingSchema = Joi.object({
+	booking: Joi.object({
+		from: Joi.date().required(),
+		to: Joi.date().required().min(Joi.ref("from")),
+		rooms: Joi.number().required().min(1),
+	}).required(),
+});

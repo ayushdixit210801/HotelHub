@@ -1,0 +1,28 @@
+<% layout("layouts/boilerplate")%>
+<main class="container mt-5">
+	<div class="row">
+		<h1 class="text-center">Modify booking details at <%= hotel.title %></h1>
+		<div class="col-md-6 offset-md-3 my-5">
+			<form action="/hotels/bookings/<%= hotel._id %>/<%= booking._id %>?_method=PUT" method="POST" novalidate class="validated-form">
+				<div class="mb-3">
+					<label class="form-label" for="from">Stay starts from</label>
+					<input class="form-control" type="date" id="from" name="booking[from]" value="<%=booking.from.toISOString().substring(0,10)%>" required />
+					<div class="valid-feedback">Looks good!</div>
+				</div>
+				<div class="mb-3">
+					<label class="form-label" for="to">Stay ends on</label>
+					<input class="form-control" type="date" id="to" name="booking[to]" value="<%=booking.to.toISOString().substring(0,10)%>" required />
+					<div class="valid-feedback">Looks good!</div>
+				</div>
+				<div class="mb-3">
+					<label class="form-label" for="rooms">Number of rooms to be booked</label>
+					<input class="form-control" type="text" id="rooms" name="booking[rooms]" value="<%=booking.rooms%>" required />
+					<div class="valid-feedback">Looks good!</div>
+				</div>
+				<div class="mb-3">
+					<button class="btn btn-info">Update Booking</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</main>

@@ -1,0 +1,118 @@
+<% layout("layouts/boilerplate")%>
+<h1 class="text-center mt-3">All Bookings</h1>
+<main class="container mt-5">
+	<ul class="nav nav-tabs" id="myTab" role="tablist">
+		<li class="nav-item fs-4" role="presentation">
+			<button
+				class="nav-link active text-danger fw-bold"
+				id="upcoming-tab"
+				data-bs-toggle="tab"
+				data-bs-target="#upcoming"
+				type="button"
+				role="tab"
+				aria-controls="upcoming"
+				aria-selected="true">
+				Upcoming
+			</button>
+		</li>
+		<li class="nav-item fs-4" role="presentation">
+			<button
+				class="nav-link text-primary fw-bold"
+				id="current-tab"
+				data-bs-toggle="tab"
+				data-bs-target="#current"
+				type="button"
+				role="tab"
+				aria-controls="current"
+				aria-selected="false">
+				Current
+			</button>
+		</li>
+		<li class="nav-item fs-4" role="presentation">
+			<button
+				class="nav-link text-success fw-bold"
+				id="completed-tab"
+				data-bs-toggle="tab"
+				data-bs-target="#completed"
+				type="button"
+				role="tab"
+				aria-controls="completed"
+				aria-selected="false">
+				Completed
+			</button>
+		</li>
+	</ul>
+	<div class="tab-content" id="myTabContent">
+		<div class="tab-pane fade show active" id="upcoming" role="tabpanel" aria-labelledby="upcoming-tab">
+			<%if(!upcoming) {%>
+			<h3 class="text-center mt-5 text-muted">No Upcoming Bookings</h3>
+			<%}%> <%for(let booking of bookings) { if(booking.status === "upcoming") { %>
+			<div class="card my-3 px-1 upcoming-tab">
+				<div class="card-body">
+					<h5 class="card-title text-danger"><i class="fas fa-solid fa-hotel me-2"></i><%= booking.hotel.title %></h5>
+					<hr />
+					<p><i class="fas fa-globe me-2 text-primary"></i><%=booking.hotel.location%></p>
+					<p class="card-text">
+						<i class="fa-solid fa-calendar-days me-1 text-primary"></i>
+						Stay from <strong><%= moment(booking.from).format('Do MMM YYYY'); %></strong> to <strong><%= moment(booking.to).format('Do MMM YYYY'); %></strong>
+					</p>
+					<p class="card-text"><i class="fa-solid fa-bed me-2 text-primary"></i><%= booking.rooms %> Room<%=booking.rooms==1?"":"s";%> Booked</p>
+					<p class="card-text"><i class="fa-solid fa-money-bill me-2 text-primary"></i>Total Cost: <strong>₹<%= booking.totalPrice %></strong></p>
+					<p class="card-text"><i class="fas fa-clock me-2 text-primary"></i>Check-in <strong><%= moment(booking.from).fromNow() %></strong></p>
+					<a href="/hotels/<%= booking.hotel._id %>" class="btn btn-success">View Hotel</a>
+					<a href="/hotels/bookings/<%= booking.hotel._id %>/<%= booking._id %>/edit" class="btn btn-warning">Modify Booking</a>
+					<form action="/hotels/bookings/<%= booking.hotel._id %>/<%= booking._id %>?_method=DELETE" method="POST" class="d-inline">
+						<button class="btn btn-danger">Cancel Booking</button>
+					</form>
+				</div>
+			</div>
+			<% } } %>
+		</div>
+		<div class="tab-pane fade" id="current" role="tabpanel" aria-labelledby="current-tab">
+			<div class="tab-pane fade show active" id="upcoming" role="tabpanel" aria-labelledby="upcoming-tab">
+				<%if(!ongoing) {%>
+				<h3 class="text-center mt-5 text-muted">No Current Bookings</h3>
+				<%}%> <%for(let booking of bookings) { if(booking.status === "ongoing") { %>
+				<div class="card my-3 px-1 current-tab">
+					<div class="card-body">
+						<h5 class="card-title text-primary"><i class="fas fa-solid fa-hotel me-2"></i><%= booking.hotel.title %></h5>
+						<hr />
+						<p><i class="fas fa-globe me-2 text-danger"></i><%=booking.hotel.location%></p>
+						<p class="card-text">
+							<i class="fa-solid fa-calendar-days me-1 text-danger"></i>
+							Stay from <strong><%= moment(booking.from).format('Do MMM YYYY'); %></strong> to <strong><%= moment(booking.to).format('Do MMM YYYY'); %></strong>
+						</p>
+						<p class="card-text"><i class="fa-solid fa-bed me-2 text-danger"></i><%= booking.rooms %> Room<%=booking.rooms==1?"":"s";%> Booked</p>
+						<p class="card-text"><i class="fa-solid fa-money-bill me-2 text-danger"></i>Total Cost: <strong>₹<%= booking.totalPrice %></strong></p>
+						<p class="card-text"><i class="fas fa-clock me-2 text-danger"></i>Check-out <strong><%= moment(booking.to).fromNow() %></strong></p>
+						<a href="/hotels/<%= booking.hotel._id %>" class="btn btn-success">View Hotel</a>
+					</div>
+				</div>
+				<% } } %>
+			</div>
+		</div>
+		<div class="tab-pane fade" id="completed" role="tabpanel" aria-labelledby="completed-tab">
+			<div class="tab-pane fade show active" id="upcoming" role="tabpanel" aria-labelledby="upcoming-tab">
+				<% if(!completed) {%>
+				<h3 class="text-center mt-5 text-muted">No Completed Bookings</h3>
+				<%}%> <%for(let booking of bookings) { if(booking.status === "completed") { %>
+				<div class="card my-3 px-1 completed-tab">
+					<div class="card-body">
+						<h5 class="card-title text-success"><i class="fas fa-solid fa-hotel me-2"></i><%= booking.hotel.title %></h5>
+						<hr />
+						<p><i class="fas fa-globe me-2 text-primary"></i><%=booking.hotel.location%></p>
+						<p class="card-text">
+							<i class="fa-solid fa-calendar-days me-1 text-primary"></i>
+							Stay from <strong><%= moment(booking.from).format('Do MMM YYYY'); %></strong> to <strong><%= moment(booking.to).format('Do MMM YYYY'); %></strong>
+						</p>
+						<p class="card-text"><i class="fa-solid fa-bed me-2 text-primary"></i><%= booking.rooms %> Room<%=booking.rooms==1?"":"s";%> Booked</p>
+						<p class="card-text"><i class="fa-solid fa-money-bill me-2 text-primary"></i>Total Cost: <strong>₹<%= booking.totalPrice %></strong></p>
+						<p class="card-text"><i class="fas fa-clock me-2 text-primary"></i>Check-out <strong><%= moment(booking.to).fromNow() %></strong></p>
+						<a href="/hotels/<%= booking.hotel._id %>" class="btn btn-success">View Hotel</a>
+					</div>
+				</div>
+				<% } } %>
+			</div>
+		</div>
+	</div>
+</main>

@@ -1,6 +1,6 @@
 # Welcome to HotelHub! ✨
 
-![HotelHub Preview](/public/images/HotelHubGIF.gif)
+![HotelHubGIF](https://github.com/user-attachments/assets/57ef8f99-7a72-456a-bb5b-a62ec715adf7)
 
 ## Features and Functionalities 😃
 

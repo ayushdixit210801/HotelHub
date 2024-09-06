@@ -8,6 +8,9 @@ module.exports.index = async (req, res) => {
 	let ongoing = false;
 	let completed = false;
 	bookings.forEach((booking) => {
+		if (booking.from > Date.now()) booking.status = "upcoming";
+		else if (booking.to < Date.now()) booking.status = "completed";
+		else booking.status = "ongoing";
 		if (booking.status === "upcoming") upcoming = true;
 		else if (booking.status === "completed") completed = true;
 		else ongoing = true;
